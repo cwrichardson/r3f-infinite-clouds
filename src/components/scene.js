@@ -45,11 +45,19 @@ export function Scene(props) {
         ...canvasProps?.style
     };
 
+    /*
+     * For this project, we want to set the clear color
+     */
+    const created = ({ gl }) => {
+        gl.setClearColor('#e7e2e2', 1);
+    } 
+
     return (
         <ErrorBoundary fallbackRender={fallbackRenderer}>
             <Canvas
               className={classes}
               style={styleReset}
+              onCreated={created}
               {...canvasProps}
               >
                 <r3f.Out />
