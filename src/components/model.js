@@ -18,8 +18,10 @@ export function Model(props) {
     
     // where the instances each go
     // create a tunnel
-    const translateArray = useMemo(() => {
+    const [ translateArray, rotateArray ] = useMemo(() => {
         const positions = [];
+        const rotations = [];
+
         for (let i = 0; i < number; i++ ) {
             const theta = Math.random() * 2 * Math.PI;
 
@@ -28,9 +30,16 @@ export function Model(props) {
                 Math.cos(theta),
                 Math.random() * 5
             )
+
+            rotations.push(
+                Math.random() * 2 * Math.PI
+            )
         }
 
-        return new Float32Array(positions);
+        return ([
+            new Float32Array(positions),
+            new Float32Array(rotations)
+        ]);
     }, [])
 
 
@@ -40,6 +49,7 @@ export function Model(props) {
             <Suspense fallback={null}>
                 <InstancedMesh
                     instanceLocations={translateArray}
+                    instanceRotations={rotateArray}
                     ref={meshRef}
                 />
                 <PerspectiveCamera

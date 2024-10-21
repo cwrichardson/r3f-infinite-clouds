@@ -8,7 +8,7 @@ import { vertex } from '@/glsl/vertex';
 import { fragment } from '@/glsl/fragment';
 
 export const InstancedMesh = forwardRef((props, ref) => {
-    const { instanceLocations } = props;
+    const { instanceLocations, instanceRotations } = props;
     const shaderRef = useRef();
 
     useFrame((state, delta, xrFrame) => {
@@ -47,7 +47,8 @@ export const InstancedMesh = forwardRef((props, ref) => {
                             args={[attr.arg, attr.size]}
                         />
                     ))}
-                    <instancedBufferAttribute attach={'attributes-aTranslate'} args={[instanceLocations, 3, false]} />
+                    <instancedBufferAttribute attach={'attributes-aTranslate'} args={[instanceLocations, 3]} />
+                    <instancedBufferAttribute attach={'attributes-aRotate'} args={[instanceRotations, 1]} />
                 </instancedBufferGeometry>
                 
                 <shaderMaterial
