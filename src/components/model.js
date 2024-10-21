@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { Suspense, useMemo, useRef } from 'react';
 import { PerspectiveCamera } from '@react-three/drei';
 
-import { Points } from '@/components/points';
+import { InstancedMesh } from './instancedMesh';
 
 const View = dynamic(() => import('src/components/view')
     .then((mod) => mod.View), {
@@ -14,18 +14,20 @@ const View = dynamic(() => import('src/components/view')
 
 export function Model(props) {
     const meshRef = useRef();
-    const rows = 512;
-    const columns = 512;
+    const number = 1000; // number of instances
     
-    const vertices = useMemo(() => {
+    // where the instances each go
+    // create a tunnel
+    const translateArray = useMemo(() => {
         const positions = [];
-        for (let x = 0; x < columns; x++ ) {
-            // center x
-            const posX = x - 256;
-            for ( let y = 0; y < rows; y++ ) {
-                // center y
-                positions.push(posX * 2, (y - 256) * 2, 0);
-            }
+        for (let i = 0; i < number; i++ ) {
+            const theta = Math.random() * 2 * Math.PI;
+
+            positions.push(
+                Math.sin(theta),
+                Math.cos(theta),
+                Math.random() * 5
+            )
         }
 
         return new Float32Array(positions);
@@ -33,10 +35,19 @@ export function Model(props) {
 
 
     return (
-        <View orbit {...props}>
+        // <View orbit {...props}>
+        <View {...props}>
             <Suspense fallback={null}>
-                <Points vertices={vertices} ref={meshRef} />
-                <PerspectiveCamera makeDefault near={0.1} far={3000} position={[0, 0, 1000]} />
+                <InstancedMesh
+                    instanceLocations={translateArray}
+                    ref={meshRef}
+                />
+                <PerspectiveCamera
+                    makeDefault
+                    near={0.1}
+                    far={1000}
+                    position={[0, 0, 3]}
+                />
             </Suspense>
         </View>
     )
