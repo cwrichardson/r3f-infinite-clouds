@@ -15,6 +15,7 @@ const View = dynamic(() => import('src/components/view')
 export function Model(props) {
     const meshRef = useRef();
     const number = 1000; // number of instances
+    const tunnelRadius = 0.5; // tunnel radius
     
     // where the instances each go
     // create a tunnel
@@ -26,8 +27,8 @@ export function Model(props) {
             const theta = Math.random() * 2 * Math.PI;
 
             positions.push(
-                Math.sin(theta),
-                Math.cos(theta),
+                tunnelRadius * Math.sin(theta),
+                tunnelRadius * Math.cos(theta),
                 Math.random() * 5
             )
 
