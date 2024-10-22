@@ -45,8 +45,8 @@ export function Model(props) {
 
 
     return (
-        // <View orbit {...props}>
-        <View {...props}>
+        // <View {...props}>
+        <View orbit {...props}>
             <Suspense fallback={null}>
                 <InstancedMesh
                     instanceLocations={translateArray}
