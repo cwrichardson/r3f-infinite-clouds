@@ -3,6 +3,7 @@ import { rotationMatrix } from './rotation-matrix';
 export const vertex = rotationMatrix + /* glsl */ `
     uniform float uTime;
     varying float vAlpha;
+    varying vec3 vPosition;
     varying vec2 vUv;
     attribute float aRotate;
     attribute vec3 aTranslate;
@@ -27,8 +28,12 @@ export const vertex = rotationMatrix + /* glsl */ `
         // make them move towards us
         newpos.z = mod(newpos.z + uTime * 0.05, 5.);
 
+        // send the newpos to the fragment shader for applying gradient
+        vPosition = newpos;
+
         // fade in when they get recreated
-        vAlpha = smoothstep(0., 1., newpos.z);
+        // vAlpha = smoothstep(0., 1., newpos.z);
+        vAlpha = smoothstep(0. + 2., 1. + 2., newpos.z);
 
         vec4 mvPosition = modelViewMatrix * vec4( newpos, 1. );
         gl_Position = projectionMatrix * mvPosition;
